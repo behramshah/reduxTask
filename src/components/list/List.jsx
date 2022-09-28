@@ -1,20 +1,23 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {axiosInstance} from '../../utils/axios';
 import { Link } from "react-router-dom";
  
 
 const List = () => {
 
-    const [customers, setCustomers] = useState([]);
+    const dispatch = useDispatch();
 
     const addToFavorites = (e) => {
-        console.log(e.target.value)
+        dispatch({type:"SET_FAVORITE", payload: e.target.value})
     }
 
     useEffect(() => {
         axiosInstance.get()
-        .then(response => setCustomers(response.data))
-    }, [customers])
+        .then(response => dispatch({type:"SET_DATA", payload: response.data}))
+    }, [])
+
+    const customers = useSelector(state => state.listReducer)
 
     return(
         <>
